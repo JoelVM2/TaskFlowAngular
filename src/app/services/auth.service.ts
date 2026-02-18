@@ -8,28 +8,28 @@ import { tap } from 'rxjs';
 export class AuthService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7057/api/auth';
+  private apiUrl = 'https://localhost:7057/api/Auth';
 
   login(email: string, password: string) {
     return this.http.post<{ token: string }>(
       `${this.apiUrl}/login`,
       { email, password }
     ).pipe(
-      tap(res => {
-        localStorage.setItem('token', res.token);
+      tap(response => {
+        localStorage.setItem('token', response.token);
       })
     );
   }
 
-  getToken() {
+  logout() {
+    localStorage.removeItem('token');
+  }
+
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
-
-  logout() {
-    localStorage.removeItem('token');
+    return !!localStorage.getItem('token');
   }
 }

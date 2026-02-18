@@ -1,1 +1,19 @@
-<p>task-card works!</p>
+<div class="task-card">
+
+  <div class="task-content">
+    <h4 class="task-title">
+      {{ task.title }}
+    </h4>
+
+    @if (task.description) {
+      <p class="task-description">
+        {{ task.description }}
+      </p>
+    }
+  </div>
+
+  <button class="delete-btn" (click)="onDelete()">
+    ✖
+  </button>
+
+</div>

@@ -1,0 +1,45 @@
+.column {
+  background: #f1f5f9;
+  width: 280px;
+  min-width: 280px;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.column-actions button {
+  background: transparent;
+  padding: 4px;
+}
+
+.tasks {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty-state {
+  font-size: 13px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.add-task-btn {
+  margin-top: 10px;
+  background: #2563eb;
+  color: white;
+}

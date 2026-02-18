@@ -1,1 +1,44 @@
-<p>board-detail-page works!</p>
+@if (board()) {
+
+  <div class="board-header">
+    <h1>{{ board()!.name }}</h1>
+    <span>Código: {{ board()!.joinCode }}</span>
+  </div>
+  <div class="add-column">
+  <button (click)="toggleColumnForm()">+ Nueva columna</button>
+
+  @if (showColumnForm) {
+    <div>
+      <input
+        type="text"
+        placeholder="Nombre columna..."
+        [(ngModel)]="newColumnName"
+      />
+      <button (click)="createColumn()">Crear</button>
+      <button (click)="toggleColumnForm()">Cancelar</button>
+    </div>
+  }
+</div>
+
+  <div class="columns-container">
+
+    @for (column of board()?.columns; track column.id) {
+
+  <app-column
+    [column]="column"
+    (columnDeleted)="handleColumnDelete($event)"
+    (columnUpdated)="handleColumnUpdate($event)">
+  </app-column>
+
+}
+
+
+  </div>
+
+} @else {
+
+  <div class="loading">
+    Cargando tablero...
+  </div>
+
+}

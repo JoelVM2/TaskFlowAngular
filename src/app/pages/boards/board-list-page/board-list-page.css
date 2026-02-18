@@ -1,0 +1,26 @@
+h1 {
+  margin: 30px;
+}
+
+.board-card {
+  background: white;
+  margin: 20px 30px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: 0.2s ease;
+}
+
+.board-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.board-card h3 {
+  margin: 0 0 6px 0;
+}
+
+.board-card p {
+  margin: 0;
+  color: #6b7280;
+}

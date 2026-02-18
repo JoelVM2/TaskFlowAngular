@@ -2,7 +2,26 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface TaskItem {
+  id: number;
+  title: string;
+  description: string;
+}
+
+export interface TaskColumn {
+  id: number;
+  name: string;
+  tasks: TaskItem[];
+}
+
 export interface Board {
+  id: number;
+  name: string;
+  joinCode: string;
+  columns: TaskColumn[];
+}
+
+export interface BoardSummary {
   id: number;
   name: string;
   joinCode: string;
@@ -16,7 +35,12 @@ export class BoardService {
   private http = inject(HttpClient);
   private apiUrl = 'https://localhost:7057/api/board';
 
-  getMyBoards(): Observable<Board[]> {
-    return this.http.get<Board[]>(`${this.apiUrl}/my`);
-  }
+ getMyBoards(): Observable<BoardSummary[]> {
+  return this.http.get<BoardSummary[]>(`${this.apiUrl}/my`);
+}
+
+  getBoard(id: string): Observable<Board> {
+  return this.http.get<Board>(`${this.apiUrl}/${id}`);
+}
+
 }

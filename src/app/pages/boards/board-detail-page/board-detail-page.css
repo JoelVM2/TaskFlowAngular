@@ -1,0 +1,30 @@
+.board-header {
+  padding: 20px 30px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.board-header h1 {
+  margin: 0;
+}
+
+.board-header span {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.add-column {
+  padding: 20px 30px;
+}
+
+.columns-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px 30px;
+  overflow-x: auto;
+}
+
+.loading {
+  padding: 40px;
+  text-align: center;
+}

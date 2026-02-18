@@ -8,6 +8,15 @@ export const routes: Routes = [
       import('./pages/auth/login-page/login-page')
         .then(m => m.LoginPage)
   },
+
+  {
+    path: 'boards/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/boards/board-detail-page/board-detail-page')
+        .then(m => m.BoardDetailPage)
+  },
+
   {
     path: 'boards',
     canActivate: [authGuard],
@@ -15,6 +24,7 @@ export const routes: Routes = [
       import('./pages/boards/board-list-page/board-list-page')
         .then(m => m.BoardListPage)
   },
+
   {
     path: '',
     redirectTo: 'boards',

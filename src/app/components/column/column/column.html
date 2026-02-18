@@ -1,1 +1,69 @@
-<p>column works!</p>
+<div class="column">
+
+  <!-- Header columna -->
+  <div class="column-header">
+
+    @if (!editing) {
+      <h3 class="column-title">
+        {{ column.name }}
+      </h3>
+    }
+
+    @if (editing) {
+      <input
+        type="text"
+        [(ngModel)]="editName"
+        class="column-edit-input"
+      />
+    }
+
+    <div class="column-actions">
+
+      @if (!editing) {
+        <button (click)="startEdit()">✏</button>
+      }
+
+      @if (editing) {
+        <button (click)="saveEdit()">✔</button>
+        <button (click)="cancelEdit()">✖</button>
+      }
+
+      <button (click)="deleteColumn()">🗑</button>
+
+    </div>
+
+  </div>
+
+  <!-- Lista de tareas -->
+  <div class="tasks">
+
+    @for (task of column.tasks; track task.id) {
+      <app-task-card
+        [task]="task"
+        (click)="openEditModal(task)"
+        (delete)="deleteTask($event)">
+      </app-task-card>
+    }
+
+    @if (column.tasks.length === 0) {
+      <p class="empty-state">Sin tareas</p>
+    }
+
+  </div>
+
+  <!-- Botón nueva tarea -->
+  <button class="add-task-btn" (click)="openCreateModal()">
+    + Nueva tarea
+  </button>
+
+</div>
+
+<!-- Modal -->
+@if (showModal) {
+  <app-task-modal
+    [task]="selectedTask"
+    [mode]="modalMode"
+    (close)="closeModal()"
+    (save)="handleSave($event)">
+  </app-task-modal>
+}
