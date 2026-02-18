@@ -1,0 +1,17 @@
+<h1>Mis Tableros</h1>
+
+@if (boards.length === 0) {
+  <div>
+    No tienes tableros.
+  </div>
+}
+
+@for (board of boards; track board.id) {
+  <div class="board-card"
+       (click)="openBoard(board.id)">
+
+    <h3>{{ board.name }}</h3>
+    <p>Código: {{ board.joinCode }}</p>
+
+  </div>
+}
