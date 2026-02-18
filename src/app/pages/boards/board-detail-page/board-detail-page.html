@@ -25,10 +25,14 @@
     @for (column of board()?.columns; track column.id) {
 
   <app-column
-    [column]="column"
-    (columnDeleted)="handleColumnDelete($event)"
-    (columnUpdated)="handleColumnUpdate($event)">
-  </app-column>
+  [column]="column"
+  (taskCreated)="handleTaskCreated($event)"
+  (taskUpdated)="handleTaskUpdated($event)"
+  (taskDeleted)="handleTaskDeleted($event)"
+  (columnDeleted)="handleColumnDelete($event)"
+  (columnUpdated)="handleColumnUpdate($event)">
+</app-column>
+
 
 }
 

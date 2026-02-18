@@ -1,25 +1,28 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { TaskColumn, TaskItem } from '../../../services/board.service';
 import { TaskCard } from "../../task/task-card/task-card";
 import { TaskService } from '../../../services/task.service';
 import { TaskModal } from "../../task/task-modal/task-modal";
-import { Output, EventEmitter } from '@angular/core';
 import { ColumnService } from '../../../services/column.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-column',
-  imports: [TaskCard, TaskModal,FormsModule],
+  imports: [TaskCard, TaskModal, FormsModule],
   templateUrl: './column.html',
   styleUrl: './column.css',
 })
 export class Column {
+
   @Input() column!: TaskColumn;
+
+  // 🔥 Eventos hacia el padre
+  @Output() taskCreated = new EventEmitter<{ columnId: number; task: TaskItem }>();
+  @Output() taskUpdated = new EventEmitter<{ columnId: number; task: TaskItem }>();
+  @Output() taskDeleted = new EventEmitter<{ columnId: number; taskId: number }>();
+
   @Output() columnDeleted = new EventEmitter<number>();
-  @Output() columnUpdated = new EventEmitter<{
-    id: number;
-    name: string;
-  }>();
+  @Output() columnUpdated = new EventEmitter<{ id: number; name: string }>();
 
   private taskService = inject(TaskService);
   private columnService = inject(ColumnService);
@@ -27,8 +30,10 @@ export class Column {
   showModal = false;
   selectedTask: TaskItem | null = null;
   modalMode: 'create' | 'edit' | 'view' = 'create';
+
   editing = false;
   editName = '';
+
   openCreateModal() {
     this.selectedTask = null;
     this.modalMode = 'create';
@@ -55,7 +60,11 @@ export class Column {
         description: data.description
       }).subscribe(task => {
 
-        this.column.tasks = [...this.column.tasks, task];
+        this.taskCreated.emit({
+          columnId: this.column.id,
+          task
+        });
+
         this.closeModal();
       });
 
@@ -66,9 +75,10 @@ export class Column {
         description: data.description
       }).subscribe(updated => {
 
-        this.column.tasks = this.column.tasks.map(t =>
-          t.id === updated.id ? updated : t
-        );
+        this.taskUpdated.emit({
+          columnId: this.column.id,
+          task: updated
+        });
 
         this.closeModal();
       });
@@ -76,17 +86,17 @@ export class Column {
   }
 
   deleteTask(taskId: number) {
-    this.taskService.deleteTask(taskId).subscribe({
-      next: () => {
-        this.column.tasks = this.column.tasks.filter(t => t.id !== taskId);
-      },
-      error: err => console.error(err)
+    this.taskService.deleteTask(taskId).subscribe(() => {
+      this.taskDeleted.emit({
+        columnId: this.column.id,
+        taskId
+      });
     });
   }
 
   startEdit() {
-  this.editing = true;
-  this.editName = this.column.name;
+    this.editing = true;
+    this.editName = this.column.name;
   }
 
   cancelEdit() {
@@ -109,7 +119,6 @@ export class Column {
   }
 
   deleteColumn() {
-
     if (!confirm('¿Eliminar columna?')) return;
 
     this.columnService.deleteColumn(this.column.id)
@@ -117,6 +126,4 @@ export class Column {
         this.columnDeleted.emit(this.column.id);
       });
   }
-
-
 }

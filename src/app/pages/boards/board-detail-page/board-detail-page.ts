@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BoardService, Board } from '../../../services/board.service';
+import { BoardService, Board, TaskItem } from '../../../services/board.service';
 import { Column } from "../../../components/column/column/column";
 import { FormsModule } from '@angular/forms';
 import { ColumnService } from '../../../services/column.service';
@@ -61,6 +61,62 @@ export class BoardDetailPage implements OnInit {
     });
   }
 
+  // 🔥 TASK CREATED
+  handleTaskCreated(event: { columnId: number; task: TaskItem }) {
+    this.board.update(b => {
+      if (!b) return b;
+
+      return {
+        ...b,
+        columns: b.columns.map(c =>
+          c.id === event.columnId
+            ? { ...c, tasks: [...c.tasks, event.task] }
+            : c
+        )
+      };
+    });
+  }
+
+  // 🔥 TASK UPDATED
+  handleTaskUpdated(event: { columnId: number; task: TaskItem }) {
+    this.board.update(b => {
+      if (!b) return b;
+
+      return {
+        ...b,
+        columns: b.columns.map(c =>
+          c.id === event.columnId
+            ? {
+                ...c,
+                tasks: c.tasks.map(t =>
+                  t.id === event.task.id ? event.task : t
+                )
+              }
+            : c
+        )
+      };
+    });
+  }
+
+  // 🔥 TASK DELETED
+  handleTaskDeleted(event: { columnId: number; taskId: number }) {
+    this.board.update(b => {
+      if (!b) return b;
+
+      return {
+        ...b,
+        columns: b.columns.map(c =>
+          c.id === event.columnId
+            ? {
+                ...c,
+                tasks: c.tasks.filter(t => t.id !== event.taskId)
+              }
+            : c
+        )
+      };
+    });
+  }
+
   handleColumnDelete(columnId: number) {
     this.board.update(b => {
       if (!b) return b;
@@ -86,5 +142,4 @@ export class BoardDetailPage implements OnInit {
       };
     });
   }
-
 }
