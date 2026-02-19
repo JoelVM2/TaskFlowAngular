@@ -19,6 +19,7 @@ export class TaskModal {
 
   title = signal('');
   description = signal('');
+  isSaving = false;
 
   ngOnInit() {
     if (this.task) {
@@ -28,10 +29,18 @@ export class TaskModal {
   }
 
   onSave() {
+    if (!this.title().trim()) return;
+
+    this.isSaving = true;
+
     this.save.emit({
       title: this.title(),
       description: this.description()
     });
+  }
+
+  resetSaving() {
+  this.isSaving = false;
   }
 
   onClose() {

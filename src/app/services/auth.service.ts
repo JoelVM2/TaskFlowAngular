@@ -32,4 +32,13 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  moveTask(id: number, data: { newColumnId: number; newPosition: number }) {
+    return this.http.put(`${this.apiUrl}/${id}/move`, data);
+  }
+
+  register(data: { username: string; email: string; password: string }) {
+  return this.http.post(`${this.apiUrl}/register`, data);
+}
+
 }

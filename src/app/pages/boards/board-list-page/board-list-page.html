@@ -11,13 +11,47 @@
 } @else {
 
   @for (board of boards; track board.id) {
-    <div class="board-card"
-         (click)="openBoard(board.id)">
 
-      <h3>{{ board.name }}</h3>
-      <p>Código: {{ board.joinCode }}</p>
+  <div class="board-card"
+       (click)="editingBoardId !== board.id && openBoard(board.id)">
 
-    </div>
-  }
+    @if (editingBoardId !== board.id) {
 
+      <div class="board-info">
+        <h3>{{ board.name }}</h3>
+        <p>Código: {{ board.joinCode }}</p>
+      </div>
+
+      <div class="board-actions">
+        <button (click)="startEdit(board, $event)">✏</button>
+        <button (click)="deleteBoard(board.id, $event)">🗑</button>
+      </div>
+
+    }
+
+    @if (editingBoardId === board.id) {
+
+      <input
+        type="text"
+        [(ngModel)]="editName"
+        (click)="$event.stopPropagation()"
+      />
+
+      <div class="board-actions">
+        <button (click)="saveEdit(board.id, $event)">✔</button>
+        <button (click)="cancelEdit()">✖</button>
+      </div>
+
+    }
+
+  </div>
+}
+
+}
+@if (showConfirmModal) {
+  <app-confirm-modal
+    message="¿Eliminar este tablero?"
+    (confirm)="confirmDelete()"
+    (cancel)="cancelDelete()">
+  </app-confirm-modal>
 }

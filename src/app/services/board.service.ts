@@ -37,10 +37,34 @@ export class BoardService {
 
  getMyBoards(): Observable<BoardSummary[]> {
   return this.http.get<BoardSummary[]>(`${this.apiUrl}/my`);
-}
+ }
 
-  getBoard(id: string): Observable<Board> {
+ getBoard(id: string): Observable<Board> {
   return this.http.get<Board>(`${this.apiUrl}/${id}`);
+ }
+
+ createBoard(data: { name: string }) {
+  return this.http.post<BoardSummary>(
+    `${this.apiUrl}`,
+    data
+  );
+ }
+
+ deleteBoard(id: number) {
+  return this.http.delete(`${this.apiUrl}/${id}`);
+ }
+
+ updateBoard(id: number, name: string) {
+  return this.http.put<BoardSummary>(`${this.apiUrl}/${id}`, {
+    name
+  });
+ }
+
+ joinBoard(data: { joinCode: string }) {
+  return this.http.post<BoardSummary>(
+    `${this.apiUrl}/join`,
+    data
+  );
 }
 
 }

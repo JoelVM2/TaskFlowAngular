@@ -1,6 +1,5 @@
 <div class="column">
 
-  <!-- Header columna -->
   <div class="column-header">
 
     @if (!editing) {
@@ -34,31 +33,36 @@
 
   </div>
 
-  <!-- Lista de tareas -->
-  <div class="tasks">
+  <div
+  class="tasks"
+  cdkDropList
+  [id]="column.id.toString()"
+  [cdkDropListData]="column.tasks"
+  [cdkDropListConnectedTo]="connectedTo"
+  (cdkDropListDropped)="drop($event)"
+>
 
-    @for (task of column.tasks; track task.id) {
+  @for (task of column.tasks; track task.id) {
+    <div cdkDrag [cdkDragData]="task">
       <app-task-card
         [task]="task"
         (click)="openEditModal(task)"
-        (delete)="deleteTask($event)">
+        (delete)="deleteTask(task.id)">
       </app-task-card>
-    }
+    </div>
+  }
 
-    @if (column.tasks.length === 0) {
-      <p class="empty-state">Sin tareas</p>
-    }
+  @if (column.tasks.length === 0) {
+    <p class="empty-state">Sin tareas</p>
+  }
 
-  </div>
-
-  <!-- Botón nueva tarea -->
+</div>
   <button class="add-task-btn" (click)="openCreateModal()">
     + Nueva tarea
   </button>
 
-</div>
 
-<!-- Modal -->
+
 @if (showModal) {
   <app-task-modal
     [task]="selectedTask"
@@ -66,4 +70,12 @@
     (close)="closeModal()"
     (save)="handleSave($event)">
   </app-task-modal>
+}
+
+@if (showConfirmModal) {
+  <app-confirm-modal
+    message="¿Eliminar columna?"
+    (confirm)="confirmDeleteColumn()"
+    (cancel)="cancelDelete()">
+  </app-confirm-modal>
 }

@@ -1,1 +1,119 @@
-<p>sidebar works!</p>
+<div class="sidebar">
+
+  <div class="sidebar-header">
+    <h2>TaskFlow</h2>
+  </div>
+
+  <div class="sidebar-nav">
+
+    <a 
+      routerLink="/boards"
+      routerLinkActive="active"
+      class="nav-item">
+      🗂 Mis tableros
+    </a>
+
+    <button 
+      class="nav-item"
+      (click)="toggleCreate()">
+      ➕ Nuevo tablero
+    </button>
+
+    <button 
+      class="nav-item"
+      (click)="toggleJoin()">
+      🔑 Unirse por código
+    </button>
+
+  </div>
+
+  @if (showCreate) {
+    <form 
+      class="create-form"
+      (ngSubmit)="createBoard()"
+      (keydown.escape)="cancelCreate()"
+    >
+
+      <input
+        type="text"
+        placeholder="Nombre del tablero..."
+        [(ngModel)]="newBoardName"
+        name="boardName"
+        required
+        autocomplete="off"
+      />
+
+      <div class="form-actions">
+        <button 
+          type="submit"
+          [disabled]="!newBoardName.trim()">
+          Crear
+        </button>
+
+        <button 
+          type="button"
+          (click)="cancelCreate()">
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+  }
+
+  @if (showJoin) {
+    <form 
+      class="create-form"
+      (ngSubmit)="joinBoard()"
+      (keydown.escape)="cancelJoin()"
+    >
+
+      <input
+        type="text"
+        placeholder="Código del tablero..."
+        [(ngModel)]="joinCode"
+        name="joinCode"
+        required
+        autocomplete="off"
+      />
+
+      <div class="form-actions">
+        <button 
+          type="submit"
+          [disabled]="!joinCode.trim()">
+          Unirse
+        </button>
+
+        <button 
+          type="button"
+          (click)="cancelJoin()">
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+  }
+
+ <div class="boards-list">
+
+  @for (board of boards(); track board.id) {
+
+    <a
+      class="board-item"
+      [routerLink]="['/boards/', board.id]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      {{ board.name }}
+    </a>
+
+  }
+
+</div>
+
+  <div class="sidebar-footer">
+    <button (click)="logout()" class="logout-btn">
+       Logout
+    </button>
+  </div>
+
+</div>

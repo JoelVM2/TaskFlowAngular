@@ -23,5 +23,8 @@ export class TaskService {
   return this.http.put<TaskItem>(`${this.apiUrl}/${id}`, data);
   }
 
+  moveTask(id: number, data: { newColumnId: number; newPosition: number }) {
+  return this.http.put(`${this.apiUrl}/${id}/move`, data);
+  }
 
 }

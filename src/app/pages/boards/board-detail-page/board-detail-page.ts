@@ -12,24 +12,33 @@ import { ColumnService } from '../../../services/column.service';
   styleUrl: './board-detail-page.css',
 })
 export class BoardDetailPage implements OnInit {
-
+  
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
   private columnService = inject(ColumnService);
-
+  
   board = signal<Board | null>(null);
 
   showColumnForm = false;
   newColumnName = '';
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+
+  this.route.paramMap.subscribe(params => {
+
+    const id = params.get('id');
     if (!id) return;
 
-    this.boardService.getBoard(id).subscribe(b => {
-      this.board.set(b);
+    this.board.set(null);
+
+    this.boardService.getBoard(id).subscribe(board => {
+      this.board.set(board);
     });
-  }
+
+  });
+
+}
+
 
   toggleColumnForm() {
     this.showColumnForm = !this.showColumnForm;
@@ -61,7 +70,6 @@ export class BoardDetailPage implements OnInit {
     });
   }
 
-  // 🔥 TASK CREATED
   handleTaskCreated(event: { columnId: number; task: TaskItem }) {
     this.board.update(b => {
       if (!b) return b;
@@ -77,7 +85,6 @@ export class BoardDetailPage implements OnInit {
     });
   }
 
-  // 🔥 TASK UPDATED
   handleTaskUpdated(event: { columnId: number; task: TaskItem }) {
     this.board.update(b => {
       if (!b) return b;
@@ -98,7 +105,6 @@ export class BoardDetailPage implements OnInit {
     });
   }
 
-  // 🔥 TASK DELETED
   handleTaskDeleted(event: { columnId: number; taskId: number }) {
     this.board.update(b => {
       if (!b) return b;
@@ -142,4 +148,12 @@ export class BoardDetailPage implements OnInit {
       };
     });
   }
+
+  getConnectedColumns(): string[] {
+  const b = this.board();
+  if (!b) return [];
+
+  return b.columns.map(c => c.id.toString());
+  }
+
 }

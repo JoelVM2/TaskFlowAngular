@@ -28,8 +28,20 @@
       <button (click)="onClose()">Cerrar</button>
 
       @if (mode !== 'view') {
-        <button (click)="onSave()">Guardar</button>
+        <button
+          (click)="onSave()"
+          [disabled]="isSaving"
+          class="save-btn">
+
+          @if (!isSaving) {
+            Guardar
+          } @else {
+            Guardando...
+          }
+
+        </button>
       }
+
 
     </div>
 
