@@ -1,59 +1,161 @@
-# TaskFlowAngular
+# 🚀 TaskFlow
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+TaskFlow es una aplicación web de gestión de proyectos tipo Kanban
+desarrollada con:
 
-## Development server
+-    **Frontend:** Angular (Standalone Components + Signals)
+-    **Backend:** ASP.NET Core (.NET 9)
+-    **Base de datos:** MySQL
+-    **Autenticación:** JWT
 
-To start a local development server, run:
+Permite crear tableros colaborativos, gestionar columnas y tareas, y
+organizar el trabajo mediante drag & drop.
 
-```bash
-ng serve
-```
+------------------------------------------------------------------------
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Funcionalidades
 
-## Code scaffolding
+### Autenticación
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+-   Registro de usuario
+-   Login con JWT
+-   Protección de rutas con AuthGuard
+-   Logout
 
-```bash
-ng generate component component-name
-```
+### Gestión de Tableros
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+-   Crear tablero
+-   Editar nombre
+-   Eliminar tablero (solo Owner)
+-   Unirse a tablero mediante código
+-   Listado de tableros del usuario
 
-```bash
-ng generate --help
-```
+### Gestión de Columnas
 
-## Building
+-   Crear columna
+-   Editar nombre
+-   Eliminar columna
+-   Orden por posición
 
-To build the project run:
+### Gestión de Tareas
 
-```bash
-ng build
-```
+-   Crear tarea
+-   Editar tarea
+-   Eliminar tarea
+-   Drag & Drop entre columnas
+-   Reordenación dentro de la misma columna
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+------------------------------------------------------------------------
 
-## Running unit tests
+## Arquitectura Frontend
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Estructura principal:
 
-```bash
-ng test
-```
+    src/app/
+    ├── components/
+    │   ├── layout/
+    │   ├── column/
+    │   ├── task/
+    │   └── ui/
+    ├── pages/
+    │   ├── auth/
+    │   └── boards/
+    ├── services/
+    ├── guards/
+    └── interceptors/
 
-## Running end-to-end tests
+### Tecnologías usadas
 
-For end-to-end (e2e) testing, run:
+-   Angular Standalone Components
+-   Angular Signals
+-   Angular CDK (Drag & Drop)
+-   HttpInterceptor para JWT
 
-```bash
-ng e2e
-```
+------------------------------------------------------------------------
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Arquitectura Backend
 
-## Additional Resources
+Controladores principales:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+-   `AuthController`
+-   `BoardController`
+-   `ColumnController`
+-   `TaskController`
+
+Entidades principales:
+
+-   User
+-   Board
+-   BoardMember
+-   Column
+-   Task
+
+Relaciones: - Un usuario puede pertenecer a varios tableros. - Un
+tablero tiene múltiples columnas. - Una columna tiene múltiples tareas.
+
+------------------------------------------------------------------------
+
+## Flujo de Navegación
+
+-   `/login`
+-   `/register`
+-   `/boards`
+-   `/boards/:id`
+
+Las rutas privadas están protegidas por `authGuard`.
+
+------------------------------------------------------------------------
+
+## Cómo ejecutar el proyecto
+
+### Backend
+
+1.  Configurar cadena de conexión MySQL.
+
+2.  Ejecutar migraciones:
+
+    ``` bash
+    dotnet ef database update
+    ```
+
+3.  Ejecutar API:
+
+    ``` bash
+    dotnet run
+    ```
+
+### Frontend
+
+1.  Instalar dependencias:
+
+    ``` bash
+    npm install
+    ```
+
+2.  Ejecutar:
+
+    ``` bash
+    ng serve
+    ```
+
+------------------------------------------------------------------------
+
+## Próximas mejoras
+
+-   Persistencia del orden tras drag & drop
+-   Roles avanzados (Admin/Member)
+-   Invitaciones por email
+-   Mejoras UI/UX
+-   Tests unitarios
+-   Deploy en producción
+
+------------------------------------------------------------------------
+
+## Autor
+
+Proyecto desarrollado por **Joel** como aplicación completa Full Stack
+(Angular + .NET).
+
+------------------------------------------------------------------------
+
+Tambien uso cdkdrop hay que instalarlo
