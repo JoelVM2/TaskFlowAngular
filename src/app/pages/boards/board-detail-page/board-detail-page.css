@@ -259,6 +259,15 @@
   background: #d1d5db;
 }
 
+.modal-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  animation: fadeIn 0.2s ease;
+}
+
 /* Animaciones */
 @keyframes fadeIn {
   from { opacity: 0; }

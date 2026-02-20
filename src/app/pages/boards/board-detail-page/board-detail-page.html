@@ -31,7 +31,11 @@
           Cancelar
         </button>
       </div>
-
+      @if (errorMessage) {
+      <div class="modal-error">
+        {{ errorMessage }}
+      </div>
+}
     </div>
   </div>
 }

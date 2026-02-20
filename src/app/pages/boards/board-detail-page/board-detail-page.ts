@@ -4,6 +4,7 @@ import { BoardService, Board, TaskItem } from '../../../services/board.service';
 import { Column } from "../../../components/column/column/column";
 import { FormsModule } from '@angular/forms';
 import { ColumnService } from '../../../services/column.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-board-detail-page',
@@ -16,9 +17,10 @@ export class BoardDetailPage implements OnInit {
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
   private columnService = inject(ColumnService);
-  
-  board = signal<Board | null>(null);
+  private cdr = inject(ChangeDetectorRef);
 
+  board = signal<Board | null>(null);
+  errorMessage = '';
   showColumnForm = false;
   newColumnName = '';
 
@@ -39,23 +41,22 @@ export class BoardDetailPage implements OnInit {
 
 }
 
-
   toggleColumnForm() {
     this.showColumnForm = !this.showColumnForm;
   }
 
   createColumn() {
-    if (!this.newColumnName.trim()) return;
-    if (!this.board()) return;
+  if (!this.newColumnName.trim()) return;
+  if (!this.board()) return;
 
-    this.columnService.createColumn({
-      boardId: this.board()!.id,
-      name: this.newColumnName
-    }).subscribe(column => {
+  this.columnService.createColumn({
+    boardId: this.board()!.id,
+    name: this.newColumnName
+  }).subscribe({
+    next: column => {
 
       this.board.update(b => {
         if (!b) return b;
-
         return {
           ...b,
           columns: [
@@ -67,8 +68,19 @@ export class BoardDetailPage implements OnInit {
 
       this.newColumnName = '';
       this.showColumnForm = false;
-    });
-  }
+      this.cdr.detectChanges();
+      this.errorMessage = '';
+    },
+
+    error: err => {
+      if (err.status === 403) {
+        this.errorMessage = 'No tienes permisos para crear columnas en este tablero.';
+      } else {
+        this.errorMessage = 'Error al crear la columna.';
+      }
+    }
+  });
+}
 
   handleTaskCreated(event: { columnId: number; task: TaskItem }) {
     this.board.update(b => {
