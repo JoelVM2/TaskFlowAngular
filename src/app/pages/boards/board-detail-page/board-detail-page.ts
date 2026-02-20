@@ -43,18 +43,18 @@ export class BoardDetailPage implements OnInit {
 
   toggleColumnForm() {
     this.showColumnForm = !this.showColumnForm;
+    this.newColumnName = '';
+    this.errorMessage = '';
   }
 
   createColumn() {
   if (!this.newColumnName.trim()) return;
   if (!this.board()) return;
-
   this.columnService.createColumn({
     boardId: this.board()!.id,
     name: this.newColumnName
   }).subscribe({
     next: column => {
-
       this.board.update(b => {
         if (!b) return b;
         return {
@@ -64,8 +64,8 @@ export class BoardDetailPage implements OnInit {
             { ...column, tasks: [] }
           ]
         };
+        
       });
-
       this.newColumnName = '';
       this.showColumnForm = false;
       this.cdr.detectChanges();
@@ -78,6 +78,7 @@ export class BoardDetailPage implements OnInit {
       } else {
         this.errorMessage = 'Error al crear la columna.';
       }
+      this.cdr.detectChanges();
     }
   });
 }
@@ -138,7 +139,7 @@ export class BoardDetailPage implements OnInit {
   handleColumnDelete(columnId: number) {
     this.board.update(b => {
       if (!b) return b;
-
+      
       return {
         ...b,
         columns: b.columns.filter(c => c.id !== columnId)

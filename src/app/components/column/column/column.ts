@@ -7,6 +7,7 @@ import { ColumnService } from '../../../services/column.service';
 import { FormsModule } from '@angular/forms';
 import { ConfirmModal } from '../../ui/confirm-modal/confirm-modal';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-column',
@@ -28,6 +29,7 @@ export class Column {
 
   private taskService = inject(TaskService);
   private columnService = inject(ColumnService);
+  private cdr = inject(ChangeDetectorRef);
 
   showModal = false;
   selectedTask: TaskItem | null = null;
@@ -36,7 +38,8 @@ export class Column {
 
   editing = false;
   editName = '';
-
+  errorMessage = '';
+  
   openCreateModal() {
     this.selectedTask = null;
     this.modalMode = 'create';
@@ -131,13 +134,28 @@ export class Column {
   this.showConfirmModal = true;
   }
 
-  confirmDeleteColumn() {
-    this.columnService.deleteColumn(this.column.id)
-      .subscribe(() => {
+ confirmDeleteColumn() {
+  this.columnService.deleteColumn(this.column.id)
+    .subscribe({
+      next: () => {
         this.columnDeleted.emit(this.column.id);
         this.showConfirmModal = false;
-      });
-  }
+        this.errorMessage = '';
+        this.cdr.detectChanges();
+      },
+      error: err => {
+        if (err.status === 403) {
+          this.errorMessage = 'No tienes permisos para eliminar esta columna.';
+        } else if (err.status === 404) {
+          this.errorMessage = 'La columna no existe.';
+        } else {
+          this.errorMessage = 'Error al eliminar la columna.';
+        }
+
+        this.cdr.detectChanges();
+      }
+    });
+}
 
   cancelDelete() {
     this.showConfirmModal = false;
@@ -175,8 +193,4 @@ export class Column {
       }).subscribe();
     }
   }
-
-  
-
-  
 }
