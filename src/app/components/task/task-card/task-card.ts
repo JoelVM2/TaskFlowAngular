@@ -1,9 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TaskItem } from '../../../services/board.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-task-card',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './task-card.html',
   styleUrl: './task-card.css',
 })
@@ -13,8 +14,9 @@ export class TaskCard {
 
   @Output() delete = new EventEmitter<number>();
 
-  onDelete() {
-    this.delete.emit(this.task.id);
-  }
+  onDelete(event: Event) {
+  event.stopPropagation();
+  this.delete.emit();
+}
 
 }

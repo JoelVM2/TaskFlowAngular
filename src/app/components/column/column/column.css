@@ -1,23 +1,22 @@
 .column {
-  background: #f1f5f9;
-  width: 280px;
-  min-width: 280px;
-  padding: 15px;
-  border-radius: 12px;
+  width: 340px;
+  min-width: 340px;
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
 }
 
+.column-title {
+  font-size: 1.25rem; 
+  font-weight: 700;
+  margin-bottom: 12px;
+}
 .column-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.column-title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
 }
 
 .column-actions button {

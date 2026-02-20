@@ -8,16 +8,33 @@
   <button (click)="toggleColumnForm()">+ Nueva columna</button>
 
   @if (showColumnForm) {
-    <div>
+  <div class="modal-overlay" (click)="toggleColumnForm()">
+
+    <div class="column-modal" (click)="$event.stopPropagation()">
+
+      <h3>Nueva columna</h3>
+
       <input
         type="text"
-        placeholder="Nombre columna..."
+        placeholder="Nombre de la columna..."
         [(ngModel)]="newColumnName"
+        (keydown.enter)="createColumn()"
+        autofocus
       />
-      <button (click)="createColumn()">Crear</button>
-      <button (click)="toggleColumnForm()">Cancelar</button>
+
+      <div class="modal-actions">
+        <button class="create-btn" (click)="createColumn()">
+          Crear
+        </button>
+
+        <button class="cancel-btn" (click)="toggleColumnForm()">
+          Cancelar
+        </button>
+      </div>
+
     </div>
-  }
+  </div>
+}
 </div>
 
   <div class="columns-container">

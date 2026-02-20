@@ -1,19 +1,23 @@
 <div class="task-card">
 
+  <button 
+    class="delete-btn" 
+    (click)="onDelete($event)">
+    ✖
+  </button>
+
   <div class="task-content">
     <h4 class="task-title">
       {{ task.title }}
     </h4>
 
     @if (task.description) {
-      <p class="task-description">
-        {{ task.description }}
-      </p>
-    }
+  <p class="task-description">
+    {{ task.description.length > 30 
+        ? (task.description | slice:0:35) + '...' 
+        : task.description }}
+  </p>
+}
   </div>
-
-  <button class="delete-btn" (click)="onDelete()">
-    ✖
-  </button>
 
 </div>
