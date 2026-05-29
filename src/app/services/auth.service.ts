@@ -8,8 +8,7 @@ import { tap } from 'rxjs';
 export class AuthService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7057/api/Auth';
-
+  private apiUrl = 'https://taskflow-jvru.onrender.com/api/Auth';
   login(email: string, password: string) {
     return this.http.post<{ token: string }>(
       `${this.apiUrl}/login`,

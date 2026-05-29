@@ -15,7 +15,7 @@ export interface Column {
 export class ColumnService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7057/api/column';
+  private apiUrl = 'https://taskflow-jvru.onrender.com/api/column';
 
   createColumn(data: { boardId: number; name: string }): Observable<Column> {
     return this.http.post<Column>(this.apiUrl, data);

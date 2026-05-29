@@ -33,7 +33,7 @@ export interface BoardSummary {
 export class BoardService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7057/api/board';
+  private apiUrl = 'https://taskflow-jvru.onrender.com/api/board';
 
  getMyBoards(): Observable<BoardSummary[]> {
   return this.http.get<BoardSummary[]>(`${this.apiUrl}/my`);

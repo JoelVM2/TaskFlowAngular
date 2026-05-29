@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class TaskService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7057/api/task';
+  private apiUrl = 'https://taskflow-jvru.onrender.com/api/task';
 
   createTask(data: { title: string; columnId: number; description?: string }) {
   return this.http.post<TaskItem>(this.apiUrl, data);
